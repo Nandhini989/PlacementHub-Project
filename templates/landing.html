@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}Placement Hub - Connect, Learn, Grow{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Welcome to Placement Hub</h1>
+                <p class="lead mb-4">Your centralized platform connecting Students, Companies, and Colleges for internships, placements, and career growth.</p>
+                {% if not user.is_authenticated %}
+                    <div class="d-flex gap-3">
+                        <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Get Started
+                        </a>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <i class="fas fa-graduation-cap" style="font-size: 200px; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">About Placement Hub</h2>
+            <p class="lead text-muted">Empowering careers through intelligent connections</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">For Students</h5>
+                        <p class="card-text">Discover internships and jobs, build AI-powered resumes, and prepare for interviews with our intelligent tools.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-building fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">For Companies</h5>
+                        <p class="card-text">Post job opportunities, track applications, and find the best talent from top colleges efficiently.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-university fa-3x text-info mb-3"></i>
+                        <h5 class="card-title">For Colleges</h5>
+                        <p class="card-text">Monitor placement statistics, connect with companies, and help students achieve their career goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Key Features</h2>
+            <p class="lead text-muted">Everything you need for successful career placement</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="feature-card card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-tachometer-alt text-primary me-2"></i>Role-Based Dashboards</h5>
+                        <p class="card-text">Personalized dashboards for students, companies, and colleges with relevant information and tools.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-robot text-success me-2"></i>AI Resume Builder</h5>
+                        <p class="card-text">Generate professional resumes using AI technology tailored to your profile and target roles.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-question-circle text-info me-2"></i>Interview Preparation</h5>
+                        <p class="card-text">Practice with company-specific interview questions and get AI-powered feedback on your answers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-briefcase text-warning me-2"></i>Job & Internship Listings</h5>
+                        <p class="card-text">Browse and apply for the latest job opportunities and internships from top companies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Platform Statistics</h2>
+            <p class="lead text-muted">Growing community of successful placements</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-card card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">5000+</h3>
+                        <p class="card-text">Registered Students</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">200+</h3>
+                        <p class="card-text">Partner Companies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">100+</h3>
+                        <p class="card-text">Colleges</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">85%</h3>
+                        <p class="card-text">Success Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">How It Works</h2>
+            <p class="lead text-muted">Simple steps to get started</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="mb-3">
+                    <i class="fas fa-user-plus fa-3x text-primary"></i>
+                </div>
+                <h5>1. Register</h5>
+                <p>Sign up as a student, company, or college with our simple registration process.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="mb-3">
+                    <i class="fas fa-user-edit fa-3x text-success"></i>
+                </div>
+                <h5>2. Complete Profile</h5>
+                <p>Fill in your profile details to help us match you with the right opportunities.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="mb-3">
+                    <i class="fas fa-rocket fa-3x text-info"></i>
+                </div>
+                <h5>3. Get Started</h5>
+                <p>Start applying for jobs, posting opportunities, or managing placements.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if user.is_authenticated %}
+<!-- User Dashboard Preview -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Welcome Back, {{ user.username }}!</h2>
+            <p class="lead text-muted">Continue your journey with Placement Hub</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                {% if user.is_student %}
+                    <a href="{% url 'students:dashboard' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Student Dashboard
+                    </a>
+                {% elif user.is_company %}
+                    <a href="{% url 'companies:dashboard' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Company Dashboard
+                    </a>
+                {% elif user.is_college %}
+                    <a href="{% url 'colleges:dashboard' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to College Dashboard
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

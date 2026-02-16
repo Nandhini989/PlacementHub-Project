@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Apply for Job - Placement Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-paper-plane me-2"></i>Apply for {{ job.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Job Details -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h5>{{ job.title }}</h5>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-building me-2"></i>{{ job.company.company_name }}
+                                <span class="ms-3"><i class="fas fa-map-marker-alt me-1"></i>{{ job.location }}</span>
+                                <span class="ms-3"><i class="fas fa-briefcase me-1"></i>{{ job.get_job_type_display }}</span>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge bg-success">{{ job.get_status_display }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="mb-4">
+                        <h6><i class="fas fa-info-circle me-2"></i>Job Description</h6>
+                        <p>{{ job.description }}</p>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="mb-4">
+                        <h6><i class="fas fa-list-check me-2"></i>Requirements</h6>
+                        <p>{{ job.requirements }}</p>
+                    </div>
+
+                    <!-- Skills Required -->
+                    <div class="mb-4">
+                        <h6><i class="fas fa-tools me-2"></i>Skills Required</h6>
+                        <p>{{ job.skills_required }}</p>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Experience Required:</strong> {{ job.experience_required }} years</p>
+                            {% if job.salary_min %}
+                                <p><strong>Salary Range:</strong> ₹{{ job.salary_min }} - ₹{{ job.salary_max }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Application Deadline:</strong> {{ job.application_deadline|date:"M d, Y" }}</p>
+                            <p><strong>Posted On:</strong> {{ job.posted_at|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Application Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="cover_letter" class="form-label">Cover Letter</label>
+                            <textarea name="cover_letter" id="cover_letter" class="form-control" rows="6" placeholder="Tell us why you're interested in this position and why you'd be a good fit..."></textarea>
+                            <small class="form-text text-muted">Optional but recommended</small>
+                        </div>
+
+                        <!-- Student Info Summary -->
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-user me-2"></i>Your Application Profile</h6>
+                            <p class="mb-1"><strong>Name:</strong> {{ student_profile.full_name }}</p>
+                            <p class="mb-1"><strong>College:</strong> {{ student_profile.college_name }}</p>
+                            <p class="mb-1"><strong>Branch:</strong> {{ student_profile.get_branch_display }}</p>
+                            <p class="mb-1"><strong>Graduation Year:</strong> {{ student_profile.graduation_year }}</p>
+                            <p class="mb-0"><strong>Skills:</strong> {{ student_profile.skills }}</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'students:job_listings' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Jobs
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Application
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

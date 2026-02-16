@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Resume Builder - Placement Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2><i class="fas fa-robot me-2"></i>AI Resume Builder</h2>
+                    <p class="text-muted mb-0">Generate a professional resume using AI based on your profile information</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Profile Info -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-user me-2"></i>Your Profile Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> {{ student_profile.full_name }}</p>
+                            <p><strong>College:</strong> {{ student_profile.college_name }}</p>
+                            <p><strong>Branch:</strong> {{ student_profile.get_branch_display }}</p>
+                            <p><strong>Graduation Year:</strong> {{ student_profile.graduation_year }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Skills:</strong> {{ student_profile.skills }}</p>
+                            <p><strong>GPA:</strong> {{ student_profile.gpa|default:"Not specified" }}</p>
+                            <p><strong>LinkedIn:</strong> {{ student_profile.linkedin_profile|default:"Not provided" }}</p>
+                            <p><strong>GitHub:</strong> {{ student_profile.github_profile|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Generation Form -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-magic me-2"></i>Generate Resume</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Resume Title</label>
+                            <input type="text" name="title" id="title" class="form-control" value="Professional Resume" placeholder="Enter a title for your resume">
+                            <small class="form-text text-muted">Give your resume a descriptive title</small>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>What will be included:</h6>
+                            <ul class="mb-0">
+                                <li>Contact Information (Email, Phone, College)</li>
+                                <li>Education Details</li>
+                                <li>Skills Section</li>
+                                <li>Professional Summary</li>
+                                <li>Sections for Projects and Experience (you can add these)</li>
+                                <li>Online Profiles (LinkedIn, GitHub)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-magic me-2"></i>Generate Resume
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-lightbulb me-2"></i>Resume Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Keep it concise and relevant
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Use action verbs and quantifiable achievements
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Tailor it to the job you're applying for
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Include relevant keywords from job descriptions
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Proofread carefully for errors
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Save as PDF for professional applications
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

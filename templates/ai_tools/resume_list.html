@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}My Resumes - Placement Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>My Resumes</h2>
+                        <p class="text-muted mb-0">Manage your AI-generated resumes</p>
+                    </div>
+                    <a href="{% url 'ai_tools:resume_builder' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create New Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumes List -->
+    <div class="row">
+        <div class="col-12">
+            {% if resumes %}
+                {% for resume in resumes %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="card-title">{{ resume.title }}</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-calendar me-2"></i>Generated on {{ resume.generated_at|date:"M d, Y H:i" }}
+                                    </p>
+                                    <div class="mb-2">
+                                        <span class="badge {% if resume.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if resume.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="d-flex flex-column h-100 justify-content-between">
+                                        <div>
+                                            <small class="text-muted">AI Generated</small>
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'ai_tools:resume_detail' resume.id %}" class="btn btn-primary btn-sm me-2">
+                                                <i class="fas fa-eye me-1"></i>View
+                                            </a>
+                                            <button class="btn btn-success btn-sm">
+                                                <i class="fas fa-download me-1"></i>Download
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                    <h4>No Resumes Yet</h4>
+                    <p class="text-muted">Create your first AI-powered resume to get started.</p>
+                    <a href="{% url 'ai_tools:resume_builder' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create Resume
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Tips Section -->
+    {% if resumes %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-lightbulb me-2"></i>Resume Best Practices</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-edit me-2"></i>Customization</h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Customize for each job application
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Add specific achievements and metrics
+                                    </li>
+                                    <li class="mb-0">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Include relevant keywords from job descriptions
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-share me-2"></i>Sharing</h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Save as PDF for professional applications
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Keep file names professional
+                                    </li>
+                                    <li class="mb-0">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Update regularly with new experiences
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

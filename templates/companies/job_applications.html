@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Job Applications - Placement Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2><i class="fas fa-users me-2"></i>Applications for {{ job.title }}</h2>
+                    <p class="text-muted mb-0">{{ job.company.company_name }} - {{ job.location }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications List -->
+    <div class="row">
+        <div class="col-12">
+            {% if applications %}
+                {% for application in applications %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="card-title">{{ application.student.full_name }}</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-graduation-cap me-2"></i>{{ application.student.college_name }}
+                                        <span class="ms-3"><i class="fas fa-book me-1"></i>{{ application.student.get_branch_display }}</span>
+                                        <span class="ms-3"><i class="fas fa-calendar me-1"></i>Graduation: {{ application.student.graduation_year }}</span>
+                                    </p>
+                                    {% if application.cover_letter %}
+                                        <p class="card-text">
+                                            <strong>Cover Letter:</strong> {{ application.cover_letter|truncatewords:15 }}
+                                        </p>
+                                    {% endif %}
+                                    <p class="mb-2">
+                                        <strong>Skills:</strong> {{ application.student.skills }}
+                                    </p>
+                                    <div>
+                                        <small class="text-muted">
+                                            <strong>Applied:</strong> {{ application.applied_at|date:"M d, Y H:i" }}
+                                            {% if application.updated_at != application.applied_at %}
+                                                <span class="ms-3"><strong>Updated:</strong> {{ application.updated_at|date:"M d, Y" }}</span>
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="d-flex flex-column h-100 justify-content-between">
+                                        <div>
+                                            {% if application.status == 'applied' %}
+                                                <span class="badge bg-primary">{{ application.get_status_display }}</span>
+                                            {% elif application.status == 'shortlisted' %}
+                                                <span class="badge bg-warning">{{ application.get_status_display }}</span>
+                                            {% elif application.status == 'interview_scheduled' %}
+                                                <span class="badge bg-info">{{ application.get_status_display }}</span>
+                                            {% elif application.status == 'selected' %}
+                                                <span class="badge bg-success">{{ application.get_status_display }}</span>
+                                            {% elif application.status == 'rejected' %}
+                                                <span class="badge bg-danger">{{ application.get_status_display }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ application.get_status_display }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            {% if application.student.resume %}
+                                                <a href="{{ application.student.resume.url }}" class="btn btn-outline-primary btn-sm me-2" target="_blank">
+                                                    <i class="fas fa-download me-1"></i>Resume
+                                                </a>
+                                            {% endif %}
+                                            
+                                            {% if application.status == 'applied' %}
+                                                <a href="{% url 'companies:update_application_status' application.id 'shortlisted' %}" class="btn btn-warning btn-sm me-2">
+                                                    <i class="fas fa-check me-1"></i>Shortlist
+                                                </a>
+                                            {% endif %}
+                                            
+                                            {% if application.status == 'shortlisted' %}
+                                                <a href="{% url 'companies:update_application_status' application.id 'interview_scheduled' %}" class="btn btn-info btn-sm me-2">
+                                                    <i class="fas fa-calendar me-1"></i>Schedule Interview
+                                                </a>
+                                            {% endif %}
+                                            
+                                            {% if application.status == 'interview_scheduled' %}
+                                                <a href="{% url 'companies:update_application_status' application.id 'selected' %}" class="btn btn-success btn-sm me-2">
+                                                    <i class="fas fa-trophy me-1"></i>Select
+                                                </a>
+                                                <a href="{% url 'companies:update_application_status' application.id 'rejected' %}" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-times me-1"></i>Reject
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h4>No Applications Yet</h4>
+                    <p class="text-muted">Applications will appear here once students start applying for this job.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="{% url 'companies:manage_jobs' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Jobs
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

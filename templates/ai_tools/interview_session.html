@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}Interview Session - Placement Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2><i class="fas fa-comments me-2"></i>Interview Session</h2>
+                    <p class="text-muted mb-0">
+                        {% if session.company %}
+                            {{ session.company.company_name }} - {{ session.job_role }}
+                        {% else %}
+                            General Interview - {{ session.job_role }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span><strong>Progress:</strong></span>
+                        <span>{{ session_questions|length }} Questions</span>
+                    </div>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%">
+                            In Progress
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interview Content -->
+    <div class="row">
+        <div class="col-md-8">
+            {% if session.is_completed %}
+                <!-- Completed Session -->
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Session Completed!</h5>
+                    </div>
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                        <h4>Congratulations!</h4>
+                        <p class="text-muted mb-4">You have completed all {{ session_questions|length }} interview questions.</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'ai_tools:interview_history' %}" class="btn btn-primary">
+                                <i class="fas fa-history me-2"></i>View History
+                            </a>
+                            <a href="{% url 'ai_tools:interview_preparation' %}" class="btn btn-success">
+                                <i class="fas fa-redo me-2"></i>Start New Session
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% elif current_question %}
+                <!-- Current Question -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Question {{ session_questions|length|subtract:session_questions|filter:is_answered|length|add:1 }} of {{ session_questions|length }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="question_id" value="{{ current_question.question.id }}">
+                            
+                            <!-- Question -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">{{ current_question.question.get_question_type_display|title }} Question</h6>
+                                    <span class="badge bg-{{ current_question.question.difficulty_level|yesno:'warning,success,info' }}">
+                                        {{ current_question.question.get_difficulty_level_display|title }}
+                                    </span>
+                                </div>
+                                <div class="alert alert-light">
+                                    <p class="mb-0">{{ current_question.question.question }}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Answer Input -->
+                            <div class="mb-4">
+                                <label for="answer" class="form-label">Your Answer:</label>
+                                <textarea name="answer" id="answer" class="form-control" rows="6" placeholder="Type your answer here..." required></textarea>
+                                <small class="form-text text-muted">Take your time to think through your answer. Use the STAR method for behavioral questions.</small>
+                            </div>
+                            
+                            <!-- Hint (if available) -->
+                            {% if current_question.question.answer %}
+                                <div class="mb-4">
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="toggleHint()">
+                                        <i class="fas fa-lightbulb me-1"></i>Show Hint
+                                    </button>
+                                    <div id="hint" class="alert alert-info mt-2" style="display: none;">
+                                        <h6><i class="fas fa-info-circle me-2"></i>Sample Answer:</h6>
+                                        <p class="mb-0">{{ current_question.question.answer }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Answer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <!-- No Current Question -->
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-spinner fa-spin fa-2x text-muted mb-3"></i>
+                        <h4>Loading Question...</h4>
+                        <p class="text-muted">Please wait while we prepare your next question.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4">
+            <!-- Session Info -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Session Details</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Started:</strong> {{ session.started_at|date:"M d, Y H:i" }}</p>
+                    {% if session.company %}
+                        <p><strong>Company:</strong> {{ session.company.company_name }}</p>
+                    {% endif %}
+                    <p><strong>Role:</strong> {{ session.job_role }}</p>
+                    <p><strong>Total Questions:</strong> {{ session_questions|length }}</p>
+                    <p><strong>Answered:</strong> {{ session_questions|length|subtract:1 }}</p>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Interview Tips</h6>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-primary">STAR Method</h6>
+                    <ul class="list-unstyled mb-3">
+                        <li class="mb-2">
+                            <strong>S</strong>ituation - Describe the context
+                        </li>
+                        <li class="mb-2">
+                            <strong>T</strong>ask - What was your responsibility?
+                        </li>
+                        <li class="mb-2">
+                            <strong>A</strong>ction - What did you do?
+                        </li>
+                        <li class="mb-0">
+                            <strong>R</strong>esult - What was the outcome?
+                        </li>
+                    </ul>
+                    
+                    <h6 class="text-primary">General Tips</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Be specific and provide examples
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Stay relevant to the question
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Show enthusiasm and confidence
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleHint() {
+    const hint = document.getElementById('hint');
+    if (hint.style.display === 'none') {
+        hint.style.display = 'block';
+    } else {
+        hint.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
